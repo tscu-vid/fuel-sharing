@@ -1,6 +1,7 @@
+import { Fuel, Receipt } from "lucide-react";
 import { getAppUsers, getRefuels, getLatestKnownKm } from "@/lib/data";
 import { logRefuel } from "./actions";
-import { SubmitButton } from "@/components/ui";
+import { SubmitButton, Field, inputClass, cardClass } from "@/components/ui";
 
 export default async function RefuelsPage() {
   const [users, refuels, latestKm] = await Promise.all([
@@ -12,11 +13,12 @@ export default async function RefuelsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">Refuels</h1>
+      <h1 className="flex items-center gap-2 text-xl font-bold text-ink-900">
+        <Fuel size={22} className="text-brand-500" /> Refuels
+      </h1>
 
-      <form action={logRefuel} className="space-y-3 rounded-xl border border-gray-200 p-4">
-        <label className="block text-sm font-medium">
-          Odometer at refuel (km)
+      <form action={logRefuel} className={`space-y-3 ${cardClass}`}>
+        <Field label="Odometer at refuel (km)">
           <input
             type="number"
             name="km"
@@ -24,11 +26,10 @@ export default async function RefuelsPage() {
             min={0}
             step="0.1"
             defaultValue={latestKm}
-            className="mt-1 w-full rounded-lg border border-gray-300 p-3"
+            className={inputClass}
           />
-        </label>
-        <label className="block text-sm font-medium">
-          Cost (€)
+        </Field>
+        <Field label="Cost (€)">
           <input
             type="number"
             name="cost"
@@ -36,39 +37,40 @@ export default async function RefuelsPage() {
             min={0.01}
             step="0.01"
             placeholder="45.30"
-            className="mt-1 w-full rounded-lg border border-gray-300 p-3"
+            className={inputClass}
           />
-        </label>
-        <label className="block text-sm font-medium">
-          Liters (optional)
+        </Field>
+        <Field label="Liters (optional)">
           <input
             type="number"
             name="liters"
             min={0.01}
             step="0.01"
             placeholder="35"
-            className="mt-1 w-full rounded-lg border border-gray-300 p-3"
+            className={inputClass}
           />
-        </label>
+        </Field>
         <SubmitButton className="w-full">Log refuel</SubmitButton>
       </form>
 
       <section>
-        <h2 className="mb-2 text-sm font-medium text-gray-500">History</h2>
-        <ul className="divide-y divide-gray-100 rounded-xl border border-gray-200">
+        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-ink-400">
+          <Receipt size={15} /> History
+        </h2>
+        <ul className={`divide-y divide-ink-50 ${cardClass} !p-0`}>
           {refuels.length === 0 && (
-            <li className="p-3 text-sm text-gray-400">No refuels logged yet.</li>
+            <li className="p-3.5 text-sm text-ink-400">No refuels logged yet.</li>
           )}
           {refuels.map((r) => (
-            <li key={r.id} className="flex items-center justify-between p-3 text-sm">
+            <li key={r.id} className="flex items-center justify-between p-3.5 text-sm">
               <div>
-                <p className="font-medium">{nameById[r.user_id] ?? "?"}</p>
-                <p className="text-gray-500">
+                <p className="font-semibold text-ink-900">{nameById[r.user_id] ?? "?"}</p>
+                <p className="text-ink-400">
                   {r.km} km · {new Date(r.refueled_at).toLocaleDateString()}
                   {r.liters ? ` · ${r.liters} L` : ""}
                 </p>
               </div>
-              <strong>€{r.cost.toFixed(2)}</strong>
+              <strong className="text-brand-500">€{r.cost.toFixed(2)}</strong>
             </li>
           ))}
         </ul>

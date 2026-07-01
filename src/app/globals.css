@@ -1,8 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f5f3;
+  --foreground: #161311;
+
+  /* Ferrari-inspired palette: Rosso Corsa red, near-black, gold accent */
+  --color-brand-50: #fdeceb;
+  --color-brand-100: #fad0cc;
+  --color-brand-400: #e42313;
+  --color-brand-500: #d2001c;
+  --color-brand-600: #ad0018;
+  --color-brand-700: #820012;
+
+  --color-ink-50: #f4f3f2;
+  --color-ink-100: #e3e0dd;
+  --color-ink-400: #4a423d;
+  --color-ink-600: #241f1c;
+  --color-ink-900: #141110;
+
+  --color-gold-100: #fbedc4;
+  --color-gold-400: #e8b923;
+  --color-gold-600: #a9860e;
 }
 
 @theme inline {
@@ -10,6 +28,23 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+
+  --color-ink-50: var(--color-ink-50);
+  --color-ink-100: var(--color-ink-100);
+  --color-ink-400: var(--color-ink-400);
+  --color-ink-600: var(--color-ink-600);
+  --color-ink-900: var(--color-ink-900);
+
+  --color-gold-100: var(--color-gold-100);
+  --color-gold-400: var(--color-gold-400);
+  --color-gold-600: var(--color-gold-600);
 }
 
 body {

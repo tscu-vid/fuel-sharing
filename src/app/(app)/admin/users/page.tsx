@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 import { clerkClient } from "@clerk/nextjs/server";
+import { ShieldUser, Mail, Users } from "lucide-react";
 import { ensureCurrentAppUser } from "@/lib/current-user";
 import { getAppUsers } from "@/lib/data";
 import { inviteUser } from "./actions";
-import { SubmitButton } from "@/components/ui";
+import { SubmitButton, Field, inputClass, cardClass } from "@/components/ui";
 
 export default async function AdminUsersPage() {
   const me = await ensureCurrentAppUser();
@@ -16,39 +17,31 @@ export default async function AdminUsersPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">Manage users</h1>
+      <h1 className="flex items-center gap-2 text-xl font-bold text-ink-900">
+        <ShieldUser size={22} className="text-brand-500" /> Manage users
+      </h1>
 
       <section>
-        <h2 className="mb-2 text-sm font-medium text-gray-500">Invite a friend</h2>
-        <form action={inviteUser} className="space-y-3 rounded-xl border border-gray-200 p-4">
-          <label className="block text-sm font-medium">
-            Name
-            <input
-              type="text"
-              name="name"
-              required
-              className="mt-1 w-full rounded-lg border border-gray-300 p-3"
-            />
-          </label>
-          <label className="block text-sm font-medium">
-            Email
-            <input
-              type="email"
-              name="email"
-              required
-              className="mt-1 w-full rounded-lg border border-gray-300 p-3"
-            />
-          </label>
+        <h2 className="mb-2 text-sm font-semibold text-ink-400">Invite a friend</h2>
+        <form action={inviteUser} className={`space-y-3 ${cardClass}`}>
+          <Field label="Name">
+            <input type="text" name="name" required className={inputClass} />
+          </Field>
+          <Field label="Email">
+            <input type="email" name="email" required className={inputClass} />
+          </Field>
           <SubmitButton className="w-full">Send invitation</SubmitButton>
         </form>
       </section>
 
       {invitations.length > 0 && (
         <section>
-          <h2 className="mb-2 text-sm font-medium text-gray-500">Pending invitations</h2>
-          <ul className="divide-y divide-gray-100 rounded-xl border border-gray-200">
+          <h2 className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-ink-400">
+            <Mail size={15} /> Pending invitations
+          </h2>
+          <ul className={`divide-y divide-ink-50 ${cardClass} !p-0`}>
             {invitations.map((inv) => (
-              <li key={inv.id} className="p-3 text-sm text-gray-600">
+              <li key={inv.id} className="p-3.5 text-sm text-ink-400">
                 {inv.emailAddress}
               </li>
             ))}
@@ -57,16 +50,18 @@ export default async function AdminUsersPage() {
       )}
 
       <section>
-        <h2 className="mb-2 text-sm font-medium text-gray-500">Users</h2>
-        <ul className="divide-y divide-gray-100 rounded-xl border border-gray-200">
+        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-ink-400">
+          <Users size={15} /> Users
+        </h2>
+        <ul className={`divide-y divide-ink-50 ${cardClass} !p-0`}>
           {users.map((u) => (
-            <li key={u.id} className="flex items-center justify-between p-3 text-sm">
+            <li key={u.id} className="flex items-center justify-between p-3.5 text-sm">
               <div>
-                <p className="font-medium">{u.name}</p>
-                <p className="text-gray-500">{u.email}</p>
+                <p className="font-semibold text-ink-900">{u.name}</p>
+                <p className="text-ink-400">{u.email}</p>
               </div>
               {u.role === "manager" && (
-                <span className="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600">
+                <span className="rounded-full bg-gold-100 px-2 py-1 text-xs font-semibold text-gold-600">
                   manager
                 </span>
               )}

@@ -1,8 +1,9 @@
 import { notFound, redirect } from "next/navigation";
+import { Pencil } from "lucide-react";
 import { ensureCurrentAppUser } from "@/lib/current-user";
 import { supabase } from "@/lib/supabase";
 import { updateDrive } from "../../actions";
-import { SubmitButton } from "@/components/ui";
+import { SubmitButton, Field, inputClass, cardClass } from "@/components/ui";
 
 export default async function EditDrivePage({
   params,
@@ -19,11 +20,12 @@ export default async function EditDrivePage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">Edit drive</h1>
-      <form action={updateDrive} className="space-y-3 rounded-xl border border-gray-200 p-4">
+      <h1 className="flex items-center gap-2 text-xl font-bold text-ink-900">
+        <Pencil size={20} className="text-brand-500" /> Edit drive
+      </h1>
+      <form action={updateDrive} className={`space-y-3 ${cardClass}`}>
         <input type="hidden" name="driveId" value={drive.id} />
-        <label className="block text-sm font-medium">
-          Start km
+        <Field label="Start km">
           <input
             type="number"
             name="startKm"
@@ -31,11 +33,10 @@ export default async function EditDrivePage({
             min={0}
             step="0.1"
             defaultValue={drive.start_km}
-            className="mt-1 w-full rounded-lg border border-gray-300 p-3"
+            className={inputClass}
           />
-        </label>
-        <label className="block text-sm font-medium">
-          End km
+        </Field>
+        <Field label="End km">
           <input
             type="number"
             name="endKm"
@@ -43,9 +44,9 @@ export default async function EditDrivePage({
             min={0}
             step="0.1"
             defaultValue={drive.end_km}
-            className="mt-1 w-full rounded-lg border border-gray-300 p-3"
+            className={inputClass}
           />
-        </label>
+        </Field>
         <SubmitButton className="w-full">Save changes</SubmitButton>
       </form>
     </div>
