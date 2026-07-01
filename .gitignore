@@ -44,3 +44,6 @@ next-env.d.ts
 supabase.txt
 vercel.txt
 clerk.txt
+
+.vercel
+.env*

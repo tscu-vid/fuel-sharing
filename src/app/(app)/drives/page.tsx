@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ensureCurrentAppUser } from "@/lib/current-user";
 import { getAppUsers, getDrives, getOpenDrive, getLatestKnownKm } from "@/lib/data";
 import { startDrive, endDrive } from "./actions";
@@ -76,12 +77,19 @@ export default async function DrivesPage() {
                   {new Date(d.started_at).toLocaleDateString()}
                 </span>
               </div>
-              <p className="text-gray-600">
-                {d.start_km} km → {d.end_km ?? "..."} km
-                {d.end_km != null && (
-                  <span className="text-gray-400"> ({(d.end_km - d.start_km).toFixed(1)} km)</span>
+              <div className="flex items-center justify-between">
+                <p className="text-gray-600">
+                  {d.start_km} km → {d.end_km ?? "..."} km
+                  {d.end_km != null && (
+                    <span className="text-gray-400"> ({(d.end_km - d.start_km).toFixed(1)} km)</span>
+                  )}
+                </p>
+                {d.end_km != null && (d.user_id === user.id || user.role === "manager") && (
+                  <Link href={`/drives/${d.id}/edit`} className="text-xs font-medium text-blue-600">
+                    Edit
+                  </Link>
                 )}
-              </p>
+              </div>
             </li>
           ))}
         </ul>
