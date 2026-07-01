@@ -47,3 +47,6 @@ clerk.txt
 
 .vercel
 .env*
+
+# local machine-specific dev tooling config
+.claude/launch.json
