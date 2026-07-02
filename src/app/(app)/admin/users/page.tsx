@@ -5,6 +5,7 @@ import { ensureCurrentAppUser } from "@/lib/current-user";
 import { getAppUsers } from "@/lib/data";
 import { inviteUser } from "./actions";
 import { SubmitButton, Field, inputClass, cardClass } from "@/components/ui";
+import { CopyButton } from "@/components/CopyButton";
 
 export default async function AdminUsersPage() {
   const me = await ensureCurrentAppUser();
@@ -41,11 +42,15 @@ export default async function AdminUsersPage() {
           </h2>
           <ul className={`divide-y divide-ink-50 ${cardClass} !p-0`}>
             {invitations.map((inv) => (
-              <li key={inv.id} className="p-3.5 text-sm text-ink-400">
+              <li key={inv.id} className="flex items-center justify-between gap-3 p-3.5 text-sm text-ink-400">
                 {inv.emailAddress}
+                {inv.url && <CopyButton text={inv.url} />}
               </li>
             ))}
           </ul>
+          <p className="mt-2 text-xs text-ink-400">
+            If the invite email doesn&apos;t arrive, copy the link above and send it directly.
+          </p>
         </section>
       )}
 
