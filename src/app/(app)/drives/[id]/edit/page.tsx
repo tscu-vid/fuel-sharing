@@ -2,8 +2,8 @@ import { notFound, redirect } from "next/navigation";
 import { Pencil } from "lucide-react";
 import { ensureCurrentAppUser } from "@/lib/current-user";
 import { supabase } from "@/lib/supabase";
-import { updateDrive } from "../../actions";
-import { SubmitButton, Field, inputClass, cardClass } from "@/components/ui";
+import { updateDrive, deleteDrive } from "../../actions";
+import { SubmitButton, ActionButton, Field, inputClass, cardClass } from "@/components/ui";
 
 export default async function EditDrivePage({
   params,
@@ -49,6 +49,15 @@ export default async function EditDrivePage({
         </Field>
         <SubmitButton className="w-full">Save changes</SubmitButton>
       </form>
+      <ActionButton
+        action={deleteDrive.bind(null, drive.id)}
+        variant="outline"
+        className="w-full !text-red-600"
+        confirmMessage="Delete this drive? This can't be undone."
+        redirectTo="/drives"
+      >
+        Delete drive
+      </ActionButton>
     </div>
   );
 }

@@ -1,10 +1,13 @@
+import Link from "next/link";
 import { Fuel, Receipt } from "lucide-react";
+import { ensureCurrentAppUser } from "@/lib/current-user";
 import { getAppUsers, getRefuels, getLatestKnownKm } from "@/lib/data";
 import { logRefuel } from "./actions";
 import { SubmitButton, Field, inputClass, cardClass } from "@/components/ui";
 
 export default async function RefuelsPage() {
-  const [users, refuels, latestKm] = await Promise.all([
+  const [user, users, refuels, latestKm] = await Promise.all([
+    ensureCurrentAppUser(),
     getAppUsers(),
     getRefuels(),
     getLatestKnownKm(),
@@ -70,7 +73,14 @@ export default async function RefuelsPage() {
                   {r.liters ? ` · ${r.liters} L` : ""}
                 </p>
               </div>
-              <strong className="text-brand-500">€{r.cost.toFixed(2)}</strong>
+              <div className="flex items-center gap-3">
+                <strong className="text-brand-500">€{r.cost.toFixed(2)}</strong>
+                {(r.user_id === user.id || user.role === "manager") && (
+                  <Link href={`/refuels/${r.id}/edit`} className="text-xs font-semibold text-brand-500">
+                    Edit
+                  </Link>
+                )}
+              </div>
             </li>
           ))}
         </ul>

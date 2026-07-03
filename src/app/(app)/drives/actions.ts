@@ -93,3 +93,24 @@ export async function updateDrive(formData: FormData) {
   revalidatePath("/dashboard");
   redirect("/drives");
 }
+
+export async function deleteDrive(driveId: string) {
+  const user = await ensureCurrentAppUser();
+
+  const { data: drive, error: fetchError } = await supabase
+    .from("drives")
+    .select("*")
+    .eq("id", driveId)
+    .single();
+  if (fetchError) throw fetchError;
+  if (drive.end_km == null) throw new Error("Only completed drives can be deleted here");
+  if (drive.user_id !== user.id && user.role !== "manager") {
+    throw new Error("Only the driver or the manager can delete this drive");
+  }
+
+  const { error } = await supabase.from("drives").delete().eq("id", driveId);
+  if (error) throw error;
+
+  revalidatePath("/drives");
+  revalidatePath("/dashboard");
+}

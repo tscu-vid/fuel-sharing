@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
 
 const VARIANTS = {
   primary:
@@ -42,14 +43,18 @@ export function ActionButton({
   className = "",
   variant = "primary",
   confirmMessage,
+  redirectTo,
 }: {
   action: () => Promise<void>;
   children: React.ReactNode;
   className?: string;
   variant?: Variant;
   confirmMessage?: string;
+  /** Path to navigate to after the action succeeds. */
+  redirectTo?: string;
 }) {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   return (
     <button
       type="button"
@@ -59,6 +64,7 @@ export function ActionButton({
         startTransition(async () => {
           try {
             await action();
+            if (redirectTo) router.push(redirectTo);
           } catch (err) {
             alert(err instanceof Error ? err.message : "Something went wrong");
           }
